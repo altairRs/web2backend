@@ -3,14 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Testing</title>
+    <title>API Test</title>
 </head>
 <body>
-    <h1>API Testing</h1>
-    <button onclick="testGet()">Test GET /users</button>
-    <button onclick="testPost()">Test POST /users</button>
-    <button onclick="testPut()">Test PUT /users/:id</button>
-    <button onclick="testDelete()">Test DELETE /users/:id</button>
+    <h1>API Test</h1>
+    <a href="home">Homeme</a>
+    <a href="login">Login</a>
+    <a href="register">Register</a>
+
+    <div>
+        <h2>Get Users</h2>
+        <button onclick="testGet()">Get Users</button>
+    </div>
+
+    <div>
+        <h2>Add User</h2>
+        <input type="text" id="addUsername" placeholder="Username">
+        <input type="email" id="addEmail" placeholder="Email">
+        <input type="password" id="addPassword" placeholder="Password">
+        <button onclick="testPost()">Add User</button>
+    </div>
+
+    <div>
+        <h2>Update User</h2>
+        <input type="number" id="updateUserId" placeholder="User ID">
+        <input type="email" id="updateEmail" placeholder="New Email">
+        <button onclick="testPut()">Update User</button>
+    </div>
+
+    <div>
+        <h2>Delete User</h2>
+        <input type="number" id="deleteUserId" placeholder="User ID">
+        <button onclick="testDelete()">Delete User</button>
+    </div>
+
     <pre id="result"></pre>
 
     <script>
@@ -34,9 +60,9 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        username: 'JaneDoe',
-                        email: 'jane@example.com',
-                        password: 'securepassword',
+                        username: document.getElementById('addUsername').value,
+                        email: document.getElementById('addEmail').value,
+                        password: document.getElementById('addPassword').value,
                     }),
                 });
                 const data = await response.json();
@@ -48,10 +74,10 @@
 
         async function testPut() {
             try {
-                const response = await fetch('http://localhost:3000/users/1', {
+                const response = await fetch(`http://localhost:3000/users/${document.getElementById('updateUserId').value}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: 'updated@example.com' }),
+                    body: JSON.stringify({ email: document.getElementById('updateEmail').value }),
                 });
                 const data = await response.json();
                 displayResult(data);
@@ -62,7 +88,7 @@
 
         async function testDelete() {
             try {
-                const response = await fetch('http://localhost:3000/users/1', {
+                const response = await fetch(`http://localhost:3000/users/${document.getElementById('deleteUserId').value}`, {
                     method: 'DELETE',
                 });
                 if (response.status === 204) {

@@ -1,6 +1,7 @@
 const http = require("http");
 const express = require("express");
 const os = require("os");
+const path = require("path");
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
@@ -9,8 +10,11 @@ const PORT = 3000;
 // Middleware for parsing JSON
 app.use(express.json());
 
-// Serve static files (HTML, CSS, etc.)
-app.use(express.static("public"));
+
+// Serve static files with fallback to '.html' or '.htm'
+app.use(express.static(path.join(__dirname, "public"), {
+    extensions: ['html', 'htm'], // Automatically serve files without extension
+}));
 
 // API routes
 app.use("/users", userRoutes);
